@@ -87,32 +87,32 @@ public class SBinTre<T> {
 
         Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
 
-        Node<T> forelder = rot;
+        Node<T> forelder = rot; // forelder er rotnoden
         Node<T> q = null;
-        int cmp = 0;
+        int cmp = 0; // hjelpe variabel for å sammenligne senere
 
-        while (forelder != null) {                         // fortsetter til p er ute av treet
-            q = forelder;                                 // q er forelder til p
-            cmp = comp.compare(verdi,forelder.verdi);     // bruker komparatoren
-            if(cmp < 0){
+        while (forelder != null) {
+            q = forelder;
+            cmp = comp.compare(verdi,forelder.verdi); // sammenligner verdiene
+            if(cmp < 0){ // hvis forelder verdi er større enn verdi skal den til venstre ellers går den til høyre
                 forelder = forelder.venstre;
             } else {
                 forelder = forelder.høyre;
             }
         }
 
-        // p er nå null, dvs. ute av treet, q er den siste vi passerte
+        // forelder er nå null, dvs. ute av treet, q er den siste vi passerte
 
-        forelder = new Node(verdi, null);                   // oppretter en ny node
+        Node<T> barn = new Node(verdi, null);                   // oppretter en ny node
 
         if (q == null){
-            rot = forelder;                  // p blir rotnode
+            rot = barn;
         }
         else if (cmp < 0){
-            q.venstre = forelder;         // venstre barn til q
+            q.venstre = barn;
         }
         else{
-            q.høyre = forelder;                        // høyre barn til q
+            q.høyre = barn;                        // høyre barn til q
         }
 
         antall++;                                // én verdi mer i treet
