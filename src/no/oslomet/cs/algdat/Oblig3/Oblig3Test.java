@@ -154,7 +154,6 @@ public class Oblig3Test {
         for (int k : b) tre.leggInn(k);
 
         s = tre.toStringPostOrder();
-        System.out.println(s);
         if (!s.equals("[1, 2, 3, 4, 5]")) {
             antallFeil++;
             System.out.println("Oppgave 3g: Feil i toStringPostOrder()! Men feilen kan");

@@ -85,34 +85,36 @@ public class SBinTre<T> {
 
     public boolean leggInn(T verdi) {
 
-        Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
+        Objects.requireNonNull(verdi, "Ulovlig med nullverdier!"); // gir mld om verdi er null
 
-        Node<T> forelder = rot; // forelder er rotnoden
+        Node<T> p = rot; // forelder er rotnoden
         Node<T> q = null;
         int cmp = 0; // hjelpe variabel for å sammenligne senere
 
-        while (forelder != null) {
-            q = forelder;
-            cmp = comp.compare(verdi,forelder.verdi); // sammenligner verdiene
+        while (p != null) {
+            q = p;
+            cmp = comp.compare(verdi,p.verdi); // sammenligner verdiene
             if(cmp < 0){ // hvis forelder verdi er større enn verdi skal den til venstre ellers går den til høyre
-                forelder = forelder.venstre;
+                p = p.venstre;
             } else {
-                forelder = forelder.høyre;
+                p = p.høyre;
             }
         }
 
         // forelder er nå null, dvs. ute av treet, q er den siste vi passerte
 
-        Node<T> barn = new Node(verdi, null);                   // oppretter en ny node
+        Node<T> node = new Node(verdi, null);                   // oppretter en ny node
 
         if (q == null){
-            rot = barn;
+            rot = node;
         }
         else if (cmp < 0){
-            q.venstre = barn;
+            q.venstre = node;
+            q.venstre.forelder = q; // forelder til q
         }
         else{
-            q.høyre = barn;                        // høyre barn til q
+            q.høyre = node;                        // høyre barn til q
+            q.høyre.forelder = q; // forelder til q
         }
 
         antall++;                                // én verdi mer i treet
@@ -152,12 +154,40 @@ public class SBinTre<T> {
 
             Objects.requireNonNull(p, "verdien er null");
 
-            while(p.venstre != null){ // går ned helt til siste barnet
-                p = p.venstre;
-                førstePostorden(p); // kaller på seg selv til siste node
-            }
-                return p; // dette blir 1ern
+            if(p.venstre != null) {
+                while (p.venstre != null) { // går ned helt til siste barnet
+                    p = p.venstre;
+                    førstePostorden(p); // kaller på seg selv til siste node
 
+                }
+
+                if (p.høyre != null) {
+                    while (p.høyre != null) { // går ned helt til siste barnet
+                        p = p.høyre;
+                        førstePostorden(p); // kaller på seg selv til siste node
+
+                        if (p.venstre != null) {
+                            while (p.venstre != null) { // går ned helt til siste barnet
+                                p = p.venstre;
+                                førstePostorden(p); // kaller på seg selv til siste node
+                            }
+                        }
+                    }
+                }
+            } else {
+                while (p.høyre != null) { // går ned helt til siste barnet
+                    p = p.høyre;
+                    førstePostorden(p); // kaller på seg selv til siste node
+
+                    if (p.venstre != null) {
+                        while (p.venstre != null) { // går ned helt til siste barnet
+                            p = p.venstre;
+                            førstePostorden(p); // kaller på seg selv til siste node
+                        }
+                    }
+                }
+            }
+            return p;
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
@@ -165,11 +195,8 @@ public class SBinTre<T> {
 
         // det er siste noden som er p
 
-        while(p.forelder != null) {
-            p = p.forelder;
-            nestePostorden(p);
-        }
-        return p;
+            p = p.forelder; // finner foreldren til førstePostorden
+            return p;
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
