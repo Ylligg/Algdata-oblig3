@@ -85,45 +85,40 @@ public class SBinTre<T> {
 
     public boolean leggInn(T verdi) {
 
-        if (verdi == null) {
-            throw new NullPointerException("du prøver å legge inn en null");
-        } else {
+        Objects.requireNonNull(verdi, "Ulovlig med nullverdier!");
 
+        Node<T> forelder = rot;
+        Node<T> q = null;
+        int cmp = 0;
 
-
-            if (antall == 0) {
-                rot = new Node(verdi, null, null, null);
-                return true;
-
+        while (forelder != null) {                         // fortsetter til p er ute av treet
+            q = forelder;                                 // q er forelder til p
+            cmp = comp.compare(verdi,forelder.verdi);     // bruker komparatoren
+            if(cmp < 0){
+                forelder = forelder.venstre;
             } else {
-
-                int com = comp.compare(verdi, rot.verdi);
-
-                if (com < 0) {
-
-                    if (rot.venstre == null) {
-                        rot.venstre = new Node(verdi, null, null, rot);
-                        antall++;
-                        rot = rot.høyre;
-                        return true;
-                    }
-                    rot = rot.venstre;
-                } else if (com > 0) {
-
-                    if (rot.høyre == null) {
-                        rot.høyre = new Node(verdi, null, null, rot);
-                        antall++;
-                        rot = rot.høyre;
-                        return true;
-                    }
-                    rot = rot.høyre;
-                }
-
-                return false;
-
+                forelder = forelder.høyre;
             }
         }
+
+        // p er nå null, dvs. ute av treet, q er den siste vi passerte
+
+        forelder = new Node(verdi, null);                   // oppretter en ny node
+
+        if (q == null){
+            rot = forelder;                  // p blir rotnode
+        }
+        else if (cmp < 0){
+            q.venstre = forelder;         // venstre barn til q
+        }
+        else{
+            q.høyre = forelder;                        // høyre barn til q
+        }
+
+        antall++;                                // én verdi mer i treet
+        return true;                             // vellykket innlegging
     }
+
 
 
 
