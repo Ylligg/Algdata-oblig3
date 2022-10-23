@@ -85,16 +85,6 @@ public class Oblig3Test {
             System.out.println("Oppgave 2c: Feil antall(T)-metoden!");
         }
 
-        Integer[] ab = {4,7,2,9,4,10,8,7,4,6};
-        SBinTre<Integer> tres = new SBinTre<>(Comparator.naturalOrder());
-        for (int verdi : ab) { tres.leggInn(verdi); }
-
-        System.out.println(tres.antall());      // Utskrift: 10
-        System.out.println(tres.antall(5));     // Utskrift: 0
-        System.out.println(tres.antall(4));     // Utskrift: 3
-        System.out.println(tres.antall(7));     // Utskrift: 2
-        System.out.println(tres.antall(10));    // Utskrift: 1
-
 
         assertEquals(antallFeil, 0);
     }  // slutt på Oppgave 2

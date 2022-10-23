@@ -120,8 +120,6 @@ public class SBinTre<T> {
     }
 
 
-
-
     public boolean fjern(T verdi) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
@@ -131,14 +129,19 @@ public class SBinTre<T> {
     }
 
     public int antall(T verdi) {
-        int antallVerdier=0;
+        int forekomst=0;
 
-        if(inneholder(verdi)){
-            antallVerdier++;
-        }
-
-
-        return antallVerdier;
+        Node<T> p = rot;
+            while (p != null) { // fortsetter når den er i treet
+                int cmp = comp.compare(verdi, p.verdi); // sammenligner verdier
+                if (cmp < 0) p = p.venstre; // hvis verdien er mindre så går den til venstre
+                else if (cmp > 0) p = p.høyre; // hvis verdien er større så går den til høyre
+                else { // hvis verdiene er like så økes antall forekomst
+                    forekomst++;
+                    p = p.høyre; // for å se om det er flere forekomster etter denne noden så blir den første forekomsten p
+                }
+            }
+        return forekomst;
     }
 
     public void nullstill() {
