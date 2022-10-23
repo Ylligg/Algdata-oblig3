@@ -149,11 +149,27 @@ public class SBinTre<T> {
     }
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+
+            Objects.requireNonNull(p, "verdien er null");
+
+            while(p.venstre != null){ // går ned helt til siste barnet
+                p = p.venstre;
+                førstePostorden(p); // kaller på seg selv til siste node
+            }
+                return p; // dette blir 1ern
+
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        Objects.requireNonNull(p, "verdien er null");
+
+        // det er siste noden som er p
+
+        while(p.forelder != null) {
+            p = p.forelder;
+            nestePostorden(p);
+        }
+        return p;
     }
 
     public void postorden(Oppgave<? super T> oppgave) {

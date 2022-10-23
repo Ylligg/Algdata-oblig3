@@ -42,10 +42,6 @@ public class Oblig3Test {
                     ("Oppgave 1c: Antall blir ikke oppdatert!");
         }
 
-        Integer[] a = {4,7,2,9,5,10,8,1,3,6};
-        SBinTre<Integer> tres = new SBinTre<>(Comparator.naturalOrder());
-        for (int verdi : a) {tres.leggInn(verdi); }
-        System.out.println(tres.antall());  // Utskrift: 10
 
         assertEquals(antallFeil, 0);
     }  // slutt på Oppgave 1
@@ -126,6 +122,7 @@ public class Oblig3Test {
 
         try {
             s = tre.toStringPostOrder();
+            System.out.println(s);
             if (!s.equals("[2, 4, 5, 3, 1, 7, 9, 8, 6, 11, 13, 12, 14, 10]")) {
                 antallFeil++;
                 System.out.println("Oppgave 3d: Feil i toStringPostOrder()! Men feilen kan");
@@ -157,6 +154,7 @@ public class Oblig3Test {
         for (int k : b) tre.leggInn(k);
 
         s = tre.toStringPostOrder();
+        System.out.println(s);
         if (!s.equals("[1, 2, 3, 4, 5]")) {
             antallFeil++;
             System.out.println("Oppgave 3g: Feil i toStringPostOrder()! Men feilen kan");
