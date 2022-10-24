@@ -123,7 +123,42 @@ public class SBinTre<T> {
 
 
     public boolean fjern(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (verdi == null) return false;
+
+        Node<T> p = rot, q = null;   // q skal være forelder til p
+
+        while (p != null){          // leter etter verdi
+
+            int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+            if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
+            else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
+            else break;    // den søkte verdien ligger i p
+        }
+        if (p == null) return false;   // finner ikke verdi
+
+        if (p.venstre == null || p.høyre == null){  // Tilfelle 1) og 2)
+
+            Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+            if (p == rot) rot = b;
+            else if (p == q.venstre) q.venstre = b;
+            else q.høyre = b;
+        }
+        else {  // Tilfelle 3)
+            Node<T> s = p, r = p.høyre;   // finner neste i inorden
+            while (r.venstre != null)
+            {
+                s = r;    // s er forelder til r
+                r = r.venstre;
+            }
+
+            p.verdi = r.verdi;   // kopierer verdien i r til p
+
+            if (s != p) s.venstre = r.høyre;
+            else s.høyre = r.høyre;
+        }
+
+        antall--;   // det er nå én node mindre i treet
+        return true;
     }
 
     public int fjernAlle(T verdi) {
@@ -149,6 +184,7 @@ public class SBinTre<T> {
     public void nullstill() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
+
     // fikk hjelp ved å se Programkode 5.1.7 g)
     private static <T> Node<T> førstePostorden(Node<T> p) {
 
@@ -161,6 +197,7 @@ public class SBinTre<T> {
             else if (p.høyre != null){
                 p = p.høyre;
             }
+
             else return p;
         }
     }
@@ -170,17 +207,19 @@ public class SBinTre<T> {
         Objects.requireNonNull(p, "verdien er null");
         // p er den første noden i postorden
 
-        if (p.høyre != null){  // p har høyre barn
-            return førstePostorden(p.høyre);
 
-        } else{  // må gå oppover i treet
+
+
+        if (p.høyre != null){  // p har høyre barn
+            return førstePostorden(p.høyre); // skriver ut venstre-barn noder
+
+        }
+        else{  // går opp i treet
 
             while (p.forelder != null && p.forelder.høyre == p){
                 p = p.forelder;
             }
-
         }
-
         return p.forelder;
 
     }
