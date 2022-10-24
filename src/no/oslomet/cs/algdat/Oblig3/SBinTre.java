@@ -152,51 +152,37 @@ public class SBinTre<T> {
 
     private static <T> Node<T> førstePostorden(Node<T> p) {
 
-            Objects.requireNonNull(p, "verdien er null");
+        Objects.requireNonNull(p, "verdien er null");
 
-            if(p.venstre != null) {
-                while (p.venstre != null) { // går ned helt til siste barnet
-                    p = p.venstre;
-                    førstePostorden(p); // kaller på seg selv til siste node
-
-                }
-
-                if (p.høyre != null) {
-                    while (p.høyre != null) { // går ned helt til siste barnet
-                        p = p.høyre;
-                        førstePostorden(p); // kaller på seg selv til siste node
-
-                        if (p.venstre != null) {
-                            while (p.venstre != null) { // går ned helt til siste barnet
-                                p = p.venstre;
-                                førstePostorden(p); // kaller på seg selv til siste node
-                            }
-                        }
-                    }
-                }
-            } else {
-                while (p.høyre != null) { // går ned helt til siste barnet
-                    p = p.høyre;
-                    førstePostorden(p); // kaller på seg selv til siste node
-
-                    if (p.venstre != null) {
-                        while (p.venstre != null) { // går ned helt til siste barnet
-                            p = p.venstre;
-                            førstePostorden(p); // kaller på seg selv til siste node
-                        }
-                    }
-                }
+        while (true) {
+            if (p.venstre != null){
+                p = p.venstre;
             }
-            return p;
+            else if (p.høyre != null){
+                p = p.høyre;
+            }
+            else return p;
+        }
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
+
         Objects.requireNonNull(p, "verdien er null");
+        // p er den første noden i postorden
 
-        // det er siste noden som er p
+        if (p.høyre != null){  // p har høyre barn
+            return førstePostorden(p.høyre);
 
-            p = p.forelder; // finner foreldren til førstePostorden
-            return p;
+        } else{  // må gå oppover i treet
+
+            while (p.forelder != null && p.forelder.høyre == p)
+            {
+                p = p.forelder;
+            }
+
+            return p.forelder;
+        }
+
     }
 
     public void postorden(Oppgave<? super T> oppgave) {
