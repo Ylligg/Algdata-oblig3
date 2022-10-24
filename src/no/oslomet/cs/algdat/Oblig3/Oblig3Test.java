@@ -180,7 +180,7 @@ public class Oblig3Test {
         //Test at postorden fungerer
         postorden.set("");
         tre.postorden(oppgave);
-        assertEquals(postorden.get(), " 2 4 5 3 1 7 9 8 6 11 13 12 14 10");
+        assertEquals(" 2 4 5 3 1 7 9 8 6 11 13 12 14 10",postorden.get());
 
         //Test at rekursiv postorden fungerer
         postorden.set("");

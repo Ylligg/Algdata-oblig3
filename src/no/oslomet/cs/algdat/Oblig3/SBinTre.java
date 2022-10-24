@@ -149,7 +149,7 @@ public class SBinTre<T> {
     public void nullstill() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
-
+    // fikk hjelp ved å se Programkode 5.1.7 g)
     private static <T> Node<T> førstePostorden(Node<T> p) {
 
         Objects.requireNonNull(p, "verdien er null");
@@ -175,18 +175,26 @@ public class SBinTre<T> {
 
         } else{  // må gå oppover i treet
 
-            while (p.forelder != null && p.forelder.høyre == p)
-            {
+            while (p.forelder != null && p.forelder.høyre == p){
                 p = p.forelder;
             }
 
-            return p.forelder;
         }
+
+        return p.forelder;
 
     }
 
+    // fikk hjelp ved å se på Programkode 5.1.15 b)
     public void postorden(Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (rot == null) return;    // hvis treet er tomt
+
+        Node<T> p = førstePostorden(rot);  // den aller første i postorden
+
+        while (p != null) {
+            oppgave.utførOppgave(p.verdi);
+            p = nestePostorden(p);
+        }
     }
 
     public void postordenRecursive(Oppgave<? super T> oppgave) {
@@ -194,7 +202,15 @@ public class SBinTre<T> {
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if (p == null) return;    // hvis noden er null
+
+        Node<T> første = førstePostorden(p);  // den aller første i postorden
+
+        if(p != null) {
+            oppgave.utførOppgave(første.verdi);
+            første = nestePostorden(p);
+            postordenRecursive(første, oppgave);
+        }
     }
 
     public ArrayList<T> serialize() {
