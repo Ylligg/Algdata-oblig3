@@ -286,11 +286,13 @@ public class SBinTre<T> {
         return liste;
     }
 
-    static <K> SBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
+    static <K>SBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
 
-        for(K i : data){
-
+        SBinTre<K> noder = new SBinTre<K>(c);
+        for (int i =0; i < data.size();i++) {
+            noder.leggInn(data.get(i));
         }
+        return noder;
     }
 
 
