@@ -162,7 +162,20 @@ public class SBinTre<T> {
     }
 
     public int fjernAlle(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        int antallFjernet=0;
+
+        Node<T> p = rot;
+        while (p != null) { // fortsetter når den er i treet
+            int cmp = comp.compare(verdi, p.verdi); // sammenligner verdier
+            if (cmp < 0) p = p.venstre; // hvis verdien er mindre så går den til venstre
+            else if (cmp > 0) p = p.høyre; // hvis verdien er større så går den til høyre
+            else { // hvis verdiene er like så økes antall forekomst
+                antallFjernet++;
+                p = p.høyre; // for å se om det er flere forekomster etter denne noden så blir den første forekomsten p
+                fjern(verdi);
+            }
+        }
+        return antallFjernet;
     }
 
     public int antall(T verdi) {
@@ -204,31 +217,34 @@ public class SBinTre<T> {
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
 
-        Objects.requireNonNull(p, "verdien er null");
-        // p er den første noden i postorden
 
 
-
-
-        if (p.høyre != null){  // p har høyre barn
-            return førstePostorden(p.høyre); // skriver ut venstre-barn noder
-
+        if(p == null || p.forelder == null){
+            return null;
         }
-        else{  // går opp i treet
 
-            while (p.forelder != null && p.forelder.høyre == p){
-                p = p.forelder;
-            }
+        else if(p.forelder.høyre == p){
+            p = p.forelder;
         }
-        return p.forelder;
+
+        else if(p.forelder.høyre == null){
+            p = p.forelder;
+        }
+
+        else {
+            p = p.forelder.høyre;
+            p = førstePostorden(p);
+        }
+
+        return p;
 
     }
 
     // fikk hjelp ved å se på Programkode 5.1.15 b)
     public void postorden(Oppgave<? super T> oppgave) {
-        if (rot == null) return;    // hvis treet er tomt
+        if (rot == null) return;
 
-        Node<T> p = førstePostorden(rot);  // den aller første i postorden
+        Node<T> p = førstePostorden(rot);
 
         while (p != null) {
             oppgave.utførOppgave(p.verdi);
@@ -243,13 +259,9 @@ public class SBinTre<T> {
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
         if (p == null) return;    // hvis noden er null
 
-        Node<T> første = førstePostorden(p);  // den aller første i postorden
-
-        if(p != null) {
-            oppgave.utførOppgave(første.verdi);
-            første = nestePostorden(p);
-            postordenRecursive(første, oppgave);
-        }
+        postordenRecursive(p.venstre, oppgave);
+        postordenRecursive(p.høyre, oppgave);
+        oppgave.utførOppgave(p.verdi);
     }
 
     public ArrayList<T> serialize() {

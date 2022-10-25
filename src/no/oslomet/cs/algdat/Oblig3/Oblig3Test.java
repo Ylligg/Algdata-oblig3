@@ -122,7 +122,6 @@ public class Oblig3Test {
 
         try {
             s = tre.toStringPostOrder();
-            System.out.println(s);
             if (!s.equals("[2, 4, 5, 3, 1, 7, 9, 8, 6, 11, 13, 12, 14, 10]")) {
                 antallFeil++;
                 System.out.println("Oppgave 3d: Feil i toStringPostOrder()! Men feilen kan");
@@ -141,7 +140,6 @@ public class Oblig3Test {
         for (int i = 0; i < 4; i++) tre.leggInn(10);
 
         s = tre.toStringPostOrder();
-        System.out.println(s);
         if (!s.equals("[10, 10, 10, 10]")) {
             antallFeil++;
             System.out.println("Oppgave 3f: Feil i toStringPostOrder()! Men feilen kan");
@@ -233,7 +231,7 @@ public class Oblig3Test {
 
         boolean fjernet = tre.fjern(12);
         s = tre.toStringPostOrder();
-
+        System.out.println(s);
         if (!s.equals("[2, 1, 4, 5, 3, 6, 8, 8, 7, 11, 10, 9, 6]")) {
             antallFeil++;
             System.out.println("Oppgave 6b: Feil i fjern(T)! Tallet 12 er ikke i treet!");
