@@ -146,7 +146,7 @@ public class SBinTre<T> {
             }
         }
 
-       else if(p.venstre != null && p.høyre == null){ // tredje tilfelle
+       else if(p.venstre != null && p.høyre == null){ // tredje tilfelle kun 1 barn
             p.venstre.forelder = p.forelder;
             if(p.forelder == null){
                 rot = p.venstre;
@@ -170,7 +170,7 @@ public class SBinTre<T> {
             }
 
 
-        } else {
+        } else { // siste tilfelle 2 barn
 
            Node<T> n = førstePostorden(p.høyre);
            p.verdi = n.verdi;
