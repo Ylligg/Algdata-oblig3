@@ -231,7 +231,6 @@ public class Oblig3Test {
 
         boolean fjernet = tre.fjern(12);
         s = tre.toStringPostOrder();
-        System.out.println(s);
         if (!s.equals("[2, 1, 4, 5, 3, 6, 8, 8, 7, 11, 10, 9, 6]")) {
             antallFeil++;
             System.out.println("Oppgave 6b: Feil i fjern(T)! Tallet 12 er ikke i treet!");
