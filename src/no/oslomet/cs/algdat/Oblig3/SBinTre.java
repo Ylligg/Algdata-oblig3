@@ -224,7 +224,12 @@ public class SBinTre<T> {
     }
 
     public void nullstill() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if(antall == 0)return;
+        Node<T> p = førstePostorden(rot);
+        while (p != null) {
+            fjern(p.verdi);
+            p = nestePostorden(p);
+        }
     }
 
     // fikk hjelp ved å se Programkode 5.1.7 g)
